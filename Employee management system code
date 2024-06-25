@@ -1,6 +1,10 @@
+# Create a Database called "employeemanagementsystem"
+
 CREATE DATABASE employeemanagementsystem ;
 USE  employeemanagementsystem ;
 
+
+# create table "Employees"
 CREATE TABLE Employees (
     EmployeeID VARCHAR(50) PRIMARY KEY,
     FirstName VARCHAR(50) ,
@@ -17,11 +21,13 @@ CREATE TABLE Employees (
     FOREIGN KEY (PositionID) REFERENCES JobPositions(PositionID)  ON DELETE CASCADE
 );
 
+# create table "Departments"
 CREATE TABLE Departments (
     DepartmentID  VARCHAR(50) PRIMARY KEY,
     DepartmentName VARCHAR(100)  
 );
 
+# create table "Job positions"
 CREATE TABLE JobPositions (
     PositionID VARCHAR(50) PRIMARY KEY,
     PositionTitle VARCHAR(100) ,
