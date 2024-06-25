@@ -1,0 +1,158 @@
+CREATE DATABASE employeemanagementsystem ;
+USE  employeemanagementsystem ;
+
+CREATE TABLE Employees (
+    EmployeeID VARCHAR(50) PRIMARY KEY,
+    FirstName VARCHAR(50) ,
+    LastName VARCHAR(50) ,
+    BirthDate DATE,
+    Gender ENUM('Male', 'Female', 'Other'),
+    HireDate DATE ,
+    Email VARCHAR(100),
+    Phone VARCHAR(20),
+    DepartmentID VARCHAR(50),
+    PositionID VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID),
+    FOREIGN KEY (PositionID) REFERENCES JobPositions(PositionID)  ON DELETE CASCADE
+);
+
+CREATE TABLE Departments (
+    DepartmentID  VARCHAR(50) PRIMARY KEY,
+    DepartmentName VARCHAR(100)  
+);
+
+CREATE TABLE JobPositions (
+    PositionID VARCHAR(50) PRIMARY KEY,
+    PositionTitle VARCHAR(100) ,
+    DepartmentID VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)  ON DELETE CASCADE
+);
+
+-- Insert Departments
+INSERT INTO Departments 
+(DepartmentID,DepartmentName) 
+VALUES
+('D-101','IT'),
+('D-102','Finance'),
+('D-103','HR'),
+('D-104','Marketing'),
+('D-105','Operations'),
+('D-106','Sales'),
+('D-107','Customer Service'),
+('D-108','Research and Development'),
+('D-109','Legal'),
+('D-110','Administration');
+
+-- Insert Job Positions
+INSERT INTO JobPositions 
+( PositionID,PositionTitle, DepartmentID, Salary)
+ VALUES
+('P-101','Software Engineer','D-101', 80000.00),
+('P-102','Senior Software Engineer', 'D-101', 100000.00),
+('P-103','Financial Analyst','D-102', 85000.00),
+('P-104','HR Manager','D-103', 90000.00),
+('P-105','Accountant','D-102', 80000.00),
+('P-106','HR Coordinator','D-103', 75000.00),
+('P-107','Marketing Specialist','D-104', 85000.00),
+('P-108','Marketing Manager','D-104', 100000.00),
+('P-109','Operations Manager','D-105', 95000.00),
+('P-110','Operations Analyst','D-105' , 80000.00),
+('P-111','Sales Representative','D-106', 85000.00),
+('P-112','Sales Manager','D-106', 110000.00),
+('P-113','Customer Service Representative','D-107', 70000.00),
+('P-114','Customer Service Manager', 'D-107', 90000.00),
+('P-115','Research Analyst','D-108', 90000.00),
+('P-116','Research Scientist','D-108', 110000.00),
+('P-117','Legal Counsel','D-109', 120000.00),
+('P-118','Legal Assistant','D-109' , 75000.00),
+('P-119','Administrative Assistant','D-110', 60000.00),
+('P-120','Executive Assistant','D-110', 80000.00);
+
+
+-- Insert Employees
+INSERT INTO Employees
+ (EmployeeID ,FirstName, LastName, BirthDate, Gender, HireDate, Email, Phone, DepartmentID, PositionID, Salary)
+VALUES
+('E-101','John', 'Doe', '1990-05-15', 'Male', '2023-01-10', 'john.doe@example.com', '123-456-7890','D-101','P-101', 80000.00),
+('E-102','Jane', 'Smith', '1995-08-22', 'Female', '2024-02-15', 'jane.smith@example.com', '234-567-8901','D-102','P-104', 90000.00),
+('E-103','Michael', 'Johnson', '1988-11-02', 'Male', '2022-07-20', 'michael.johnson@example.com', '345-678-9012','D-103','P-107', 95000.00),
+('E-104','Emily', 'Brown', '1992-03-18', 'Female', '2023-05-05', 'emily.brown@example.com', '456-789-0123','D-104', 'P-110', 100000.00),
+('E-105','David', 'Lee', '1985-09-30', 'Male', '2020-11-12', 'david.lee@example.com', '567-890-1234','D-105', 'P-111', 95000.00),
+('E-106','Sarah', 'Wilson', '1990-07-04', 'Female', '2021-09-08', 'sarah.wilson@example.com', '678-901-2345','D-106', 'P-113', 85000.00),
+('E-107','James', 'Clark', '1982-12-25', 'Male', '2019-04-01', 'james.clark@example.com', '789-012-3456','D-107', 'P-116', 90000.00),
+('E-108','Jessica', 'Miller', '1987-06-10', 'Female', '2020-02-20', 'jessica.miller@example.com', '890-123-4567','D-108','P-118', 110000.00),
+('E-109','Daniel', 'Martinez', '1993-01-05', 'Male', '2022-03-15', 'daniel.martinez@example.com', '901-234-5678','D-109', 'P-119', 120000.00),
+('E-110','Linda', 'Garcia', '1984-04-20', 'Female', '2018-08-10', 'linda.garcia@example.com', '012-345-6789','D-110', 'P-120', 60000.00);
+
+-- Retrieve all employees with their department and position details
+
+SELECT 
+    e.EmployeeID,
+    e.FirstName,
+    e.LastName,
+    e.BirthDate,
+    e.Gender,
+    e.HireDate,
+    e.Email,
+    e.Phone,
+    d.DepartmentName,
+    jp.PositionTitle,
+    e.Salary
+FROM Employees e
+INNER JOIN Departments d ON e.DepartmentID = d.DepartmentID
+INNER JOIN JobPositions jp ON e.PositionID = jp.PositionID;
+
+-- Retrieve all from employees
+
+SELECT * FROM Employees  ;
+
+-- Retrieve all from departments
+
+SELECT * FROM Departments ;
+
+-- Retrieve all JobPositions
+SELECT * FROM JobPositions ;
+
+-- Add a new employee
+
+INSERT INTO Employees 
+(EmployeeID,FirstName, LastName, BirthDate, Gender, HireDate, Email, Phone, DepartmentID, PositionID, Salary)
+VALUES 
+('E-111','John', 'Doe', '1990-05-15', 'Male', '2023-01-10', 'john.doe@example.com', '123-456-7890', 'D-101','P-101', 85000.00);
+
+-- Update an employee's salary
+
+UPDATE Employees
+SET Salary = 90000.00
+WHERE EmployeeID = 'E-101';
+
+-- Delete an employee
+
+DELETE FROM Employees WHERE EmployeeID = 'E-102';
+
+--  Retrieve average salary by department
+
+SELECT 
+    d.DepartmentName,
+    AVG(e.Salary) AS AverageSalary
+FROM Employees e
+INNER JOIN Departments d ON e.DepartmentID = d.DepartmentID
+GROUP BY d.DepartmentName;
+
+
+-- Retrieve employees in a specific department
+
+SELECT 
+    e.EmployeeID,
+    e.FirstName,
+    e.LastName,
+    jp.PositionTitle,
+    e.Salary
+FROM Employees e
+INNER JOIN JobPositions jp ON e.PositionID = jp.PositionID
+WHERE e.DepartmentID = 'D-101';
+
+
+
